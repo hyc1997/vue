@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<input type="button" value="修改msg" @click="msg='No'">
+			<h3 id="h3">{{ msg }}</h3>
+		</div>
+		
+		<script >
+			var app=new Vue({
+				el:'#app',
+				data:{
+					msg:'ok'
+				},
+				methods:{
+					show() {
+						console.log('执行了msg')
+					}
+				},
+				beforeCreate(){//这是我们遇到的第一个生命周期函数这是我们的歌一个晟敏手气单数
+					// console.log(this.msg)
+					// console.log('hello')
+					// this.show() //控制台会报错 找不到此方法
+				},
+				created() {//生命周期的第二个周期函数
+					// console.log(this.msg)//此时data和methods 都已经执行好了
+					// this.show() //会执行show方法
+				},
+				beforeMount() {//在挂载开始之前被调用：相关的 render 函数首次被调用。该钩子在服务器端渲染期间不被调用。 
+					//这是第三个生命周期函数，模板已经在内存中，但尚未把模板 渲染到页面中
+					// console.log(document.getElementById('h3').innerText)//此时控制台会输出{{msg}},页面元素没有被渲染
+				},
+				mounted() {//第四个周期函数，内存的模板已经挂在到页面中，用户可以看到已经渲染好的页面
+					// console.log(document.getElementById('h3').innerText)
+					//mounted 是实例创建期间的最后一个生命周期函数，当执行完mounted 表示实例已经完全被创建好
+					//此时如果没有其他操作，就是放在内存中
+				}
+				
+				
+				
+			})
+		</script>
+	</body>
+</html>

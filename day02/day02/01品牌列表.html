@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="./css/bootstrap-3.3.7.css"/>
+	</head>
+	<body>
+		<div id="app">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h4 class="panel-body form-inline">添加品牌</h4>					
+				</div>
+				<div class="panel-body form-inline">
+					<label>
+						Id:
+						<input type="text" class="form-control" v-model="id" name="" id="" value="" />
+					</label>
+					  <label>
+					          Name:
+					          <input type="text" class="form-control" v-model="name">
+					  </label>
+					  
+					  
+					   <input type="button" value="添加" class="btn btn-primary" @click="add()">
+					    <label>
+					             搜索名称关键字：
+					             <input type="text" class="form-control" v-model="keywords">
+					    </label>
+				</div>
+			</div>
+			
+			<table border="" class="table table-bordered table-hover table-striped" cellspacing="" cellpadding="">
+				<tr>
+					<th>Id</th>
+                   <th>Name</th>
+                   <th>Ctime</th>
+                   <th>Operation</th>
+				</tr>
+				<tr>
+					 <!-- 之前， v-for 中的数据，都是直接从 data 上的list中直接渲染过来的 -->
+					        <!-- 现在， 我们自定义了一个 search 方法，同时，把 所有的关键字，通过传参的形式，传递给了 search 方法 -->
+					        <!-- 在 search 方法内部，通过 执行 for 循环， 把所有符合 搜索关键字的数据，保存到 一个新数组中，返回 -->
+					<tr v-for="item in search(keywords)" :key="item.id">
+						<td>{{item.id}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.ctime}}</td>
+						<td>
+							<a href="" @click="del(item.id)">删除</a>
+						</td>
+					</tr>
+				</tr>
+			</table>
+			
+			
+		</div>
+		<script type="text/javascript">
+			var app = new Vue({
+				el:'#app',
+				data:{
+					id:'',
+					name: '',
+					keywords: '',
+					list: [
+						 { id: 1, name: '奔驰', ctime: new Date() },
+						 { id: 2, name: '宝马', ctime: new Date() }
+					]
+					
+				},
+				methods:{
+					add() {//添加操作
+						var car={id: this.id,name: this.name,ctime: new Date()}
+						this.list.push(car)
+						this.id=this.name=''
+					},
+					del(id) {
+						 // 1. 如何根据Id，找到要删除这一项的索引
+						// 2. 如果找到索引了，直接调用 数组的 splice 方法
+						// 在 数组的 some 方法中，如果 return true，就会立即终止这个数组的后续循环
+						this.list.some(
+						(item,i)=>{
+								if(item.id== id){
+									
+									this.list.splice(i,1)
+									return true;
+								}
+						})
+						
+					},
+					search(keywords) {
+						// var newList = []
+						// this.list.forEach(item => {
+						// 	if (item.name.indexOf(keywords) !=-1) {
+						// 		newList.push(item)
+						// 	}
+						// })
+						// return newList
+						
+						//注意 forEach 
+						return this.list.filter(item => {
+							if(item.name.includes(keywords)) {
+								return item
+							}
+						})
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
